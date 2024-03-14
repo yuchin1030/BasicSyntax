@@ -1,0 +1,38 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Default Uncontrolled Changelist",
+			"files": [
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/PrototypeLV.umap",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Blueprints/EscapeInstance.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/BP/BP_EscapeState.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/UI/UI_Result.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Materials/M_EnergyShield.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Materials/MI_EnergyShield_Inst.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/NewBlueprint.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/_GENERATED/admin/Sphere_59E0F0E4.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Sequence/SQC_Opening.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/_GENERATED/addinedu/Cylinder_4118B74A.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/_GENERATED/addinedu/Boolean_ADEF3C0F.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/_GENERATED/addinedu/Cylinder_A35FE8BC.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/PrototypeLV_BuiltData.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Materials/MI_basic.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Materials/MI_basic1.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Lightmass.umap",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Lightmass_BuiltData.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Materials/NewMaterial.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Materials/M_basic.uasset",
+				"C:/Program Files/Epic Games/UE_5.3/Engine/Content/MapTemplates/SM_Template_Map_Floor.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Materials/M_Post.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/Password/BP_Dial.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/BP/BP_DialManager.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/BP/BP_Moving.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/Proto/BP/BP_hitPickup.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/Parthenon/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset"
+			]
+		}
+	]
+}
