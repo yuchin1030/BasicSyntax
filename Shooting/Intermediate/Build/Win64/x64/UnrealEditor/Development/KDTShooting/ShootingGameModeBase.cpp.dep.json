@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\source\\kdtshooting\\private\\shootinggamemodebase.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\x64\\kdtshootingeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\kdtshooting\\definitions.kdtshooting.h",
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\source\\kdtshooting\\public\\shootinggamemodebase.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\gameframework\\gamemodebase.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\engine\\serverstatreplicator.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\serverstatreplicator.generated.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gamemodebase.generated.h",
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\unrealeditor\\inc\\kdtshooting\\uht\\shootinggamemodebase.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

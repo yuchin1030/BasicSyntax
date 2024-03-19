@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"C:\\Users\\admin\\Documents\\Unreal Projects\\KDTShooting\\Source\\KDTShooting\\KDTShooting.Build.cs",
+		"C:\\Users\\admin\\Documents\\Unreal Projects\\KDTShooting\\Source\\KDTShooting.Target.cs",
+		"C:\\Users\\admin\\Documents\\Unreal Projects\\KDTShooting\\Source\\KDTShootingEditor.Target.cs"
+	],
+	"EngineVersion": "5.3.2"
+}

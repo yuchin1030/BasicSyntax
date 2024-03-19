@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "KDTShooting",
+			"Path": "..\\Source\\KDTShooting.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "KDTShootingEditor",
+			"Path": "..\\Source\\KDTShootingEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

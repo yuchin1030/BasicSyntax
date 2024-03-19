@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\KDTShooting.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\KDTShooting.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\KDTShootingEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\.vsconfig" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\KDTShooting">
+      <UniqueIdentifier>{6AFEEC92-6245-3302-B560-7C477D14B40E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\KDTShooting\KDTShooting.Build.cs">
+      <Filter>Source\KDTShooting</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\KDTShooting\KDTShooting.cpp">
+      <Filter>Source\KDTShooting</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\KDTShooting\KDTShooting.h">
+      <Filter>Source\KDTShooting</Filter>
+    </ClInclude>
+    <Filter Include="Source\KDTShooting\Private">
+      <UniqueIdentifier>{A5F0A4BB-D2C1-3F10-B8B1-EE5BCF2DF168}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\KDTShooting\Private\PointerTestActor.cpp">
+      <Filter>Source\KDTShooting\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\KDTShooting\Private\ShootingGameModeBase.cpp">
+      <Filter>Source\KDTShooting\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\KDTShooting\Private\ShootingPlayer.cpp">
+      <Filter>Source\KDTShooting\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\KDTShooting\Public">
+      <UniqueIdentifier>{E11F3C84-96D9-36B4-8529-C4C7C1076AAF}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\KDTShooting\Public\PointerTestActor.h">
+      <Filter>Source\KDTShooting\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\KDTShooting\Public\ShootingGameModeBase.h">
+      <Filter>Source\KDTShooting\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\KDTShooting\Public\ShootingPlayer.h">
+      <Filter>Source\KDTShooting\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

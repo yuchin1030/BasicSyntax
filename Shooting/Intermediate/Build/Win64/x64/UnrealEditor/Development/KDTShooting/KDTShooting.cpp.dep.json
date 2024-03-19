@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\source\\kdtshooting\\kdtshooting.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\x64\\kdtshootingeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\kdtshooting\\definitions.kdtshooting.h",
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\source\\kdtshooting\\kdtshooting.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

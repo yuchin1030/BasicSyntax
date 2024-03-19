@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-KDTShooting-1144.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\admin\Documents\Unreal Projects\KDTShooting\Intermediate\Build\Win64\x64\KDTShootingEditor\Development\Engine\SharedPCH.Engine.Cpp20.h.obj"
+"C:\Users\admin\Documents\Unreal Projects\KDTShooting\Intermediate\Build\Win64\x64\UnrealEditor\Development\KDTShooting\KDTShooting.init.gen.cpp.obj"
+"C:\Users\admin\Documents\Unreal Projects\KDTShooting\Intermediate\Build\Win64\x64\UnrealEditor\Development\KDTShooting\ShootingPlayer.gen.cpp.obj"
+"C:\Users\admin\Documents\Unreal Projects\KDTShooting\Intermediate\Build\Win64\x64\UnrealEditor\Development\KDTShooting\KDTShooting.cpp.obj"
+"C:\Users\admin\Documents\Unreal Projects\KDTShooting\Intermediate\Build\Win64\x64\UnrealEditor\Development\KDTShooting\ShootingPlayer.cpp.obj"
+"C:\Users\admin\Documents\Unreal Projects\KDTShooting\Intermediate\Build\Win64\x64\UnrealEditor\Development\KDTShooting\Default.rc2.res"
+/OUT:"C:\Users\admin\Documents\Unreal Projects\KDTShooting\Intermediate\Build\Win64\x64\UnrealEditor\Development\KDTShooting\UnrealEditor-KDTShooting-1144.lib"

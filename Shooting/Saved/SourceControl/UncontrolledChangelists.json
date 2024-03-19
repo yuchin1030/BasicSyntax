@@ -1,0 +1,26 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Default Uncontrolled Changelist",
+			"files": [
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/StarterContent/Particles/P_Ambient_Dust.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/Maps/ShootingMap.umap",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/PointerTestActor.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_ShootingPlayer.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_PointerTestActor.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_ShootingGameModeBase.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_ShootingGameModeBase2.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/Maps/TestMap.umap",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/TestBP/BP_ShootingGameModeBase2.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/TestBP/BP_ShootingPlayer2.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/Inputs/IA_Move.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/Inputs/IMC_ShootingMap.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_ShootingPlayer2.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_ShottingPlayer.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/Maps/Map.umap"
+			]
+		}
+	]
+}
