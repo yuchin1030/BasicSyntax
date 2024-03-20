@@ -34,11 +34,30 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	FVector2D inputDir;
 
+	UPROPERTY(EditAnywhere, Category = "MySettings")
+	class UInputMappingContext* imc_myMapping;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings")
+	class UInputAction* ia_move;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings")
+	class UInputAction* ia_fire;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings")
+	TSubclassOf<class ABulletActor> bulletFactory;			// TSubclassOf<클래스타입> : 블루프린트 클래스를 넣고싶을때
+
+	UPROPERTY(EditAnywhere, Category = "MySettings")
+	class UArrowComponent* fireLocation;
+
 private:
 	UFUNCTION(BlueprintCallable)
 	void Move(FVector direction, float deltaTime);
 
+	UFUNCTION()
+	void SetInputDirection(const FInputActionValue& value);	// Input을 넣을 함수의 매개변수는 무조건 const FInputActionValue& value 여야 함. (변수 이름 value는 자유)
 
+	UFUNCTION()
+	void Fire(const FInputActionValue& value);
 
 
 

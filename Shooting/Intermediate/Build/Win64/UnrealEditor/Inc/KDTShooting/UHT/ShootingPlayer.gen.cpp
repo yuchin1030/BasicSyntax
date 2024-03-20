@@ -6,15 +6,22 @@
 
 #include "UObject/GeneratedCppIncludes.h"
 #include "KDTShooting/Public/ShootingPlayer.h"
+#include "InputActionValue.h"
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeShootingPlayer() {}
 // Cross Module References
+	COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector2D();
 	ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
 	ENGINE_API UClass* Z_Construct_UClass_APawn();
+	ENGINE_API UClass* Z_Construct_UClass_UArrowComponent_NoRegister();
 	ENGINE_API UClass* Z_Construct_UClass_UBoxComponent_NoRegister();
 	ENGINE_API UClass* Z_Construct_UClass_UStaticMeshComponent_NoRegister();
+	ENHANCEDINPUT_API UClass* Z_Construct_UClass_UInputAction_NoRegister();
+	ENHANCEDINPUT_API UClass* Z_Construct_UClass_UInputMappingContext_NoRegister();
+	ENHANCEDINPUT_API UScriptStruct* Z_Construct_UScriptStruct_FInputActionValue();
+	KDTSHOOTING_API UClass* Z_Construct_UClass_ABulletActor_NoRegister();
 	KDTSHOOTING_API UClass* Z_Construct_UClass_APointerTestActor_NoRegister();
 	KDTSHOOTING_API UClass* Z_Construct_UClass_AShootingPlayer();
 	KDTSHOOTING_API UClass* Z_Construct_UClass_AShootingPlayer_NoRegister();
@@ -44,6 +51,22 @@ void EmptyLinkFunctionForGeneratedCodeShootingPlayer() {}
 		*(int32*)Z_Param__Result=P_THIS->Multiply(Z_Param_num1,Z_Param_num2);
 		P_NATIVE_END;
 	}
+	DEFINE_FUNCTION(AShootingPlayer::execFire)
+	{
+		P_GET_STRUCT_REF(FInputActionValue,Z_Param_Out_value);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->Fire(Z_Param_Out_value);
+		P_NATIVE_END;
+	}
+	DEFINE_FUNCTION(AShootingPlayer::execSetInputDirection)
+	{
+		P_GET_STRUCT_REF(FInputActionValue,Z_Param_Out_value);
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->SetInputDirection(Z_Param_Out_value);
+		P_NATIVE_END;
+	}
 	DEFINE_FUNCTION(AShootingPlayer::execMove)
 	{
 		P_GET_STRUCT(FVector,Z_Param_direction);
@@ -57,12 +80,62 @@ void EmptyLinkFunctionForGeneratedCodeShootingPlayer() {}
 	{
 		UClass* Class = AShootingPlayer::StaticClass();
 		static const FNameNativePtrPair Funcs[] = {
+			{ "Fire", &AShootingPlayer::execFire },
 			{ "GetNumberFloat", &AShootingPlayer::execGetNumberFloat },
 			{ "Move", &AShootingPlayer::execMove },
 			{ "Multiply", &AShootingPlayer::execMultiply },
 			{ "PrintInputNumber", &AShootingPlayer::execPrintInputNumber },
+			{ "SetInputDirection", &AShootingPlayer::execSetInputDirection },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
+	}
+	struct Z_Construct_UFunction_AShootingPlayer_Fire_Statics
+	{
+		struct ShootingPlayer_eventFire_Parms
+		{
+			FInputActionValue value;
+		};
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_value_MetaData[];
+#endif
+		static const UECodeGen_Private::FStructPropertyParams NewProp_value;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AShootingPlayer_Fire_Statics::NewProp_value_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AShootingPlayer_Fire_Statics::NewProp_value = { "value", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShootingPlayer_eventFire_Parms, value), Z_Construct_UScriptStruct_FInputActionValue, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShootingPlayer_Fire_Statics::NewProp_value_MetaData), Z_Construct_UFunction_AShootingPlayer_Fire_Statics::NewProp_value_MetaData) }; // 1693336646
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AShootingPlayer_Fire_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AShootingPlayer_Fire_Statics::NewProp_value,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AShootingPlayer_Fire_Statics::Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Input\xec\x9d\x84 \xeb\x84\xa3\xec\x9d\x84 \xed\x95\xa8\xec\x88\x98\xec\x9d\x98 \xeb\xa7\xa4\xea\xb0\x9c\xeb\xb3\x80\xec\x88\x98\xeb\x8a\x94 \xeb\xac\xb4\xec\xa1\xb0\xea\xb1\xb4 const FInputActionValue& value \xec\x97\xac\xec\x95\xbc \xed\x95\xa8. (\xeb\xb3\x80\xec\x88\x98 \xec\x9d\xb4\xeb\xa6\x84 value\xeb\x8a\x94 \xec\x9e\x90\xec\x9c\xa0)\n" },
+#endif
+		{ "ModuleRelativePath", "Public/ShootingPlayer.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Input\xec\x9d\x84 \xeb\x84\xa3\xec\x9d\x84 \xed\x95\xa8\xec\x88\x98\xec\x9d\x98 \xeb\xa7\xa4\xea\xb0\x9c\xeb\xb3\x80\xec\x88\x98\xeb\x8a\x94 \xeb\xac\xb4\xec\xa1\xb0\xea\xb1\xb4 const FInputActionValue& value \xec\x97\xac\xec\x95\xbc \xed\x95\xa8. (\xeb\xb3\x80\xec\x88\x98 \xec\x9d\xb4\xeb\xa6\x84 value\xeb\x8a\x94 \xec\x9e\x90\xec\x9c\xa0)" },
+#endif
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShootingPlayer_Fire_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShootingPlayer, nullptr, "Fire", nullptr, nullptr, Z_Construct_UFunction_AShootingPlayer_Fire_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AShootingPlayer_Fire_Statics::PropPointers), sizeof(Z_Construct_UFunction_AShootingPlayer_Fire_Statics::ShootingPlayer_eventFire_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShootingPlayer_Fire_Statics::Function_MetaDataParams), Z_Construct_UFunction_AShootingPlayer_Fire_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AShootingPlayer_Fire_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Z_Construct_UFunction_AShootingPlayer_Fire_Statics::ShootingPlayer_eventFire_Parms) < MAX_uint16);
+	UFunction* Z_Construct_UFunction_AShootingPlayer_Fire()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AShootingPlayer_Fire_Statics::FuncParams);
+		}
+		return ReturnFunction;
 	}
 	struct Z_Construct_UFunction_AShootingPlayer_GetNumberFloat_Statics
 	{
@@ -224,6 +297,48 @@ void EmptyLinkFunctionForGeneratedCodeShootingPlayer() {}
 		}
 		return ReturnFunction;
 	}
+	struct Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics
+	{
+		struct ShootingPlayer_eventSetInputDirection_Parms
+		{
+			FInputActionValue value;
+		};
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_value_MetaData[];
+#endif
+		static const UECodeGen_Private::FStructPropertyParams NewProp_value;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::NewProp_value_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::NewProp_value = { "value", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ShootingPlayer_eventSetInputDirection_Parms, value), Z_Construct_UScriptStruct_FInputActionValue, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::NewProp_value_MetaData), Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::NewProp_value_MetaData) }; // 1693336646
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::NewProp_value,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/ShootingPlayer.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AShootingPlayer, nullptr, "SetInputDirection", nullptr, nullptr, Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::PropPointers), sizeof(Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::ShootingPlayer_eventSetInputDirection_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::Function_MetaDataParams), Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::ShootingPlayer_eventSetInputDirection_Parms) < MAX_uint16);
+	UFunction* Z_Construct_UFunction_AShootingPlayer_SetInputDirection()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AShootingPlayer_SetInputDirection_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
 	IMPLEMENT_CLASS_NO_AUTO_REGISTRATION(AShootingPlayer);
 	UClass* Z_Construct_UClass_AShootingPlayer_NoRegister()
 	{
@@ -252,6 +367,26 @@ void EmptyLinkFunctionForGeneratedCodeShootingPlayer() {}
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_inputDir_MetaData[];
 #endif
 		static const UECodeGen_Private::FStructPropertyParams NewProp_inputDir;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_imc_myMapping_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_imc_myMapping;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_ia_move_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ia_move;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_ia_fire_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_ia_fire;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_bulletFactory_MetaData[];
+#endif
+		static const UECodeGen_Private::FClassPropertyParams NewProp_bulletFactory;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_fireLocation_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_fireLocation;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_age1_MetaData[];
 #endif
@@ -287,10 +422,12 @@ void EmptyLinkFunctionForGeneratedCodeShootingPlayer() {}
 	};
 	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingPlayer_Statics::DependentSingletons) < 16);
 	const FClassFunctionLinkInfo Z_Construct_UClass_AShootingPlayer_Statics::FuncInfo[] = {
+		{ &Z_Construct_UFunction_AShootingPlayer_Fire, "Fire" }, // 320289238
 		{ &Z_Construct_UFunction_AShootingPlayer_GetNumberFloat, "GetNumberFloat" }, // 1351694123
 		{ &Z_Construct_UFunction_AShootingPlayer_Move, "Move" }, // 1967268835
 		{ &Z_Construct_UFunction_AShootingPlayer_Multiply, "Multiply" }, // 4271068628
 		{ &Z_Construct_UFunction_AShootingPlayer_PrintInputNumber, "PrintInputNumber" }, // 1851509489
+		{ &Z_Construct_UFunction_AShootingPlayer_SetInputDirection, "SetInputDirection" }, // 3153917157
 	};
 	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingPlayer_Statics::FuncInfo) < 2048);
 #if WITH_METADATA
@@ -342,6 +479,48 @@ void EmptyLinkFunctionForGeneratedCodeShootingPlayer() {}
 	};
 #endif
 	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AShootingPlayer_Statics::NewProp_inputDir = { "inputDir", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShootingPlayer, inputDir), Z_Construct_UScriptStruct_FVector2D, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingPlayer_Statics::NewProp_inputDir_MetaData), Z_Construct_UClass_AShootingPlayer_Statics::NewProp_inputDir_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShootingPlayer_Statics::NewProp_imc_myMapping_MetaData[] = {
+		{ "Category", "MySettings" },
+		{ "ModuleRelativePath", "Public/ShootingPlayer.h" },
+	};
+#endif
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AShootingPlayer_Statics::NewProp_imc_myMapping = { "imc_myMapping", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShootingPlayer, imc_myMapping), Z_Construct_UClass_UInputMappingContext_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingPlayer_Statics::NewProp_imc_myMapping_MetaData), Z_Construct_UClass_AShootingPlayer_Statics::NewProp_imc_myMapping_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_move_MetaData[] = {
+		{ "Category", "MySettings" },
+		{ "ModuleRelativePath", "Public/ShootingPlayer.h" },
+	};
+#endif
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_move = { "ia_move", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShootingPlayer, ia_move), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_move_MetaData), Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_move_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_fire_MetaData[] = {
+		{ "Category", "MySettings" },
+		{ "ModuleRelativePath", "Public/ShootingPlayer.h" },
+	};
+#endif
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_fire = { "ia_fire", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShootingPlayer, ia_fire), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_fire_MetaData), Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_fire_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShootingPlayer_Statics::NewProp_bulletFactory_MetaData[] = {
+		{ "Category", "MySettings" },
+		{ "ModuleRelativePath", "Public/ShootingPlayer.h" },
+	};
+#endif
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AShootingPlayer_Statics::NewProp_bulletFactory = { "bulletFactory", nullptr, (EPropertyFlags)0x0014000000000001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShootingPlayer, bulletFactory), Z_Construct_UClass_UClass, Z_Construct_UClass_ABulletActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingPlayer_Statics::NewProp_bulletFactory_MetaData), Z_Construct_UClass_AShootingPlayer_Statics::NewProp_bulletFactory_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShootingPlayer_Statics::NewProp_fireLocation_MetaData[] = {
+		{ "Category", "MySettings" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// TSubclassOf<\xed\x81\xb4\xeb\x9e\x98\xec\x8a\xa4\xed\x83\x80\xec\x9e\x85> : \xeb\xb8\x94\xeb\xa3\xa8\xed\x94\x84\xeb\xa6\xb0\xed\x8a\xb8 \xed\x81\xb4\xeb\x9e\x98\xec\x8a\xa4\xeb\xa5\xbc \xeb\x84\xa3\xea\xb3\xa0\xec\x8b\xb6\xec\x9d\x84\xeb\x95\x8c\n" },
+#endif
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Public/ShootingPlayer.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "TSubclassOf<\xed\x81\xb4\xeb\x9e\x98\xec\x8a\xa4\xed\x83\x80\xec\x9e\x85> : \xeb\xb8\x94\xeb\xa3\xa8\xed\x94\x84\xeb\xa6\xb0\xed\x8a\xb8 \xed\x81\xb4\xeb\x9e\x98\xec\x8a\xa4\xeb\xa5\xbc \xeb\x84\xa3\xea\xb3\xa0\xec\x8b\xb6\xec\x9d\x84\xeb\x95\x8c" },
+#endif
+	};
+#endif
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AShootingPlayer_Statics::NewProp_fireLocation = { "fireLocation", nullptr, (EPropertyFlags)0x0010000000080009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShootingPlayer, fireLocation), Z_Construct_UClass_UArrowComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingPlayer_Statics::NewProp_fireLocation_MetaData), Z_Construct_UClass_AShootingPlayer_Statics::NewProp_fireLocation_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShootingPlayer_Statics::NewProp_age1_MetaData[] = {
 		{ "Category", "My Settings" },
@@ -423,6 +602,11 @@ void EmptyLinkFunctionForGeneratedCodeShootingPlayer() {}
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_meshComp,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_speed,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_inputDir,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_imc_myMapping,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_move,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_ia_fire,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_bulletFactory,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_fireLocation,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_age1,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_numberFloat,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingPlayer_Statics::NewProp_name,
@@ -468,9 +652,9 @@ void EmptyLinkFunctionForGeneratedCodeShootingPlayer() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingPlayer_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_AShootingPlayer, AShootingPlayer::StaticClass, TEXT("AShootingPlayer"), &Z_Registration_Info_UClass_AShootingPlayer, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AShootingPlayer), 1738118172U) },
+		{ Z_Construct_UClass_AShootingPlayer, AShootingPlayer::StaticClass, TEXT("AShootingPlayer"), &Z_Registration_Info_UClass_AShootingPlayer, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AShootingPlayer), 4056448722U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingPlayer_h_76033057(TEXT("/Script/KDTShooting"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingPlayer_h_2114483663(TEXT("/Script/KDTShooting"),
 		Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingPlayer_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingPlayer_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);

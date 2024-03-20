@@ -42,6 +42,9 @@
     <Filter Include="Source\KDTShooting\Private">
       <UniqueIdentifier>{A5F0A4BB-D2C1-3F10-B8B1-EE5BCF2DF168}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\KDTShooting\Private\BulletActor.cpp">
+      <Filter>Source\KDTShooting\Private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\KDTShooting\Private\PointerTestActor.cpp">
       <Filter>Source\KDTShooting\Private</Filter>
     </ClCompile>
@@ -54,6 +57,9 @@
     <Filter Include="Source\KDTShooting\Public">
       <UniqueIdentifier>{E11F3C84-96D9-36B4-8529-C4C7C1076AAF}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="..\..\Source\KDTShooting\Public\BulletActor.h">
+      <Filter>Source\KDTShooting\Public</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\KDTShooting\Public\PointerTestActor.h">
       <Filter>Source\KDTShooting\Public</Filter>
     </ClInclude>

@@ -9,6 +9,7 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+struct FInputActionValue;
 #ifdef KDTSHOOTING_ShootingPlayer_generated_h
 #error "ShootingPlayer.generated.h already included, missing '#pragma once' in ShootingPlayer.h"
 #endif
@@ -22,6 +23,8 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 	DECLARE_FUNCTION(execPrintInputNumber); \
 	DECLARE_FUNCTION(execGetNumberFloat); \
 	DECLARE_FUNCTION(execMultiply); \
+	DECLARE_FUNCTION(execFire); \
+	DECLARE_FUNCTION(execSetInputDirection); \
 	DECLARE_FUNCTION(execMove);
 
 

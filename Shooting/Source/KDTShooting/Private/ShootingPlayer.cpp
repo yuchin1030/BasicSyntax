@@ -2,6 +2,10 @@
 #include "PointerTestActor.h"
 #include "Components/BoxComponent.h"	// 컴포넌트들은 Components파일 안에 있음. - 박스 컴포넌트 헤더파일
 #include "Components/StaticMeshComponent.h"	//	- 스태틱메쉬 컴포넌트 헤더파일
+#include "Components/ArrowComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
+#include "BulletActor.h"
 
 using namespace std;
 
@@ -26,6 +30,12 @@ AShootingPlayer::AShootingPlayer()	// construction
 
 	// 2-2. 메시 컴포넌트의 위치를 z축으로 -50만큼 내린다.
 	meshComp->SetRelativeLocation(FVector(0,0,-50));
+
+	// 3. 총구 표시용 화살표 컴포넌트를 생성한다.
+	fireLocation = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow Component"));
+	fireLocation->SetupAttachment(boxComp);
+	fireLocation->SetRelativeLocation(FVector(0, 0, 100));
+	fireLocation->SetRelativeRotation(FRotator(90, 0, 0));	// 에디터 상에서는 FRotator(Roll, Pitch, Yaw), C++에서는 FRotator(Pitch, Yaw, Roll)
 }
 
 /*
@@ -38,20 +48,35 @@ AShootingPlayer::AShootingPlayer()	// construction
 void AShootingPlayer::BeginPlay()	// start() - world에 처음 생성됐을때
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("BeginPlay"));
+
+	//EnhancedInputSystem에서 입력 맵핑 콘텍스트 파일을 언리얼 엔진 시스템에 로드하기
+	// 1. 현재 사용 중인 APlayerController 클래스 변수를 불러온다.
+	APlayerController* pc = GetWorld()->GetFirstPlayerController();
+
+
+	// (블루프린트에서 EnhancedInputLocalPlayerSubsystem 노드)
+	if (pc != nullptr) {	// Access Violence Error : Null pointer인데 사용하려고 했다 ==> 이 에러가 발생하면 에디터가 튕기므로 포인터 변수는 항상 조건 처리
+
+		// 2. EnhancedInput 내용을 담은 Subsystem을 가져온다.
+		UEnhancedInputLocalPlayerSubsystem* subsys = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(pc->GetLocalPlayer());
+
+		if (subsys != nullptr) {
+			// 3. UEnhancedInputLocalPlayerSubsystem에 imc 파일 추가한다.
+		// (블루프린트에서)
+		// target		Mapping Context Asset name ,Priority)
+		// subsys->AddMappingContext(imc_myMapping, 0);
+			subsys->AddMappingContext(imc_myMapping, 0);
+		}
+		
+	}
+	else {	// if-else 둘 다 해주기
+		UE_LOG(LogTemp, Error, TEXT("PlayerController is Null"))
+	}
+
 	
 
-
-
-
-
-
-
-
-
-
-
-
-
+	
 
 
 
@@ -135,17 +160,28 @@ void AShootingPlayer::Tick(float DeltaTime)	// update
 	Super::Tick(DeltaTime);
 
 	// 사용자가 입력한 방향대로 이동을 하고 싶다.
-
+	FVector moveDir = FVector(0, inputDir.X, inputDir.Y);	// 포인터 변수일때 접근 : ->, 그냥 인스턴스일때 접근 : .
+	Move(moveDir, DeltaTime);
 
 	// 자동 이동
 	//Move(FVector(0,0,1), DeltaTime);
 }
 
-// Allows a Pawn to set up custom input bindings.
-void AShootingPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+// Allows input bindings.					UInputComponent : 예전 입력방식. 따라서 EnhancedInput으로 캐스팅(변환)해야함.
+void AShootingPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)	// BeginPlay보다 먼저 실행됨
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	// UInputComponent : 예전 입력방식. 따라서 EnhancedInput으로 캐스팅(변환)해야함.
+	UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
+	if (enhancedInputComponent != nullptr) {
+		// 4. 입력 이벤트 컴포넌트에 실행할 함수를 연결(Binding)한다.					함수의 주소값을 가져옴
+		enhancedInputComponent->BindAction(ia_move, ETriggerEvent::Triggered, this, &AShootingPlayer::SetInputDirection);		// ETriggerEvent의 접두어 E : enum(열거) 클래스 (선택지를 만들어놓는 클래스)
+		enhancedInputComponent->BindAction(ia_move, ETriggerEvent::Completed, this, &AShootingPlayer::SetInputDirection);
+		enhancedInputComponent->BindAction(ia_fire, ETriggerEvent::Started, this, &AShootingPlayer::Fire);
+						// 추가적인 입력은 여기에 한줄씩만 추가해주면 된다.
+	}
 }
 
 void AShootingPlayer::Move(FVector direction, float deltaTime)
@@ -157,6 +193,28 @@ void AShootingPlayer::Move(FVector direction, float deltaTime)
 	SetActorLocation(nextLocation);
 
 	//SetActorLocation(GetActorLocation() + direction * speed * deltaTime);
+}
+
+void AShootingPlayer::SetInputDirection(const FInputActionValue& value)
+{
+	// 사용자의 실제 입력 값을 inputDir 변수에 저장한다.
+	inputDir = value.Get<FVector2D>();		// value 값이 struct 자료형이기 때문에 강제로 Vector2D 형으로 캐스팅(Get) 한다.
+											// FVector2D : IA에서 설정해놓은 Value Type과 동일해야함.
+}
+
+void AShootingPlayer::Fire(const FInputActionValue& value)
+{
+	// 충돌 옵션 : 무조건 내가 설정한 위치에서 생성되어야 한다.
+	FActorSpawnParameters params;
+	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;	// Spawn할때 충돌을 조절
+	/*
+	AlwaysSpawn : 항상 그 위치에 생성
+	AdjustIfPossibleButAlwaysSpawn : Adjust(위치를 조절)해봐서, 될 것 같으면 원래 위치랑 가깝지만 최대한 안부딪히게 원래 위치와 가까운 위치에 생성
+	AdjustIfPossibleButDontSpawnIfColliding : 아무리 Adjust(위치를 조절)해도 안될 것 같으면 생성 X
+	*/
+
+	// 총알 액터를 fire의 Location과 Rotation 위치 및 방향으로 생성한다.
+	GetWorld()->SpawnActor<ABulletActor>(bulletFactory, fireLocation->GetComponentLocation(), fireLocation->GetComponentRotation(), params);	// SpawnActor : Actor 의 새 인스턴스를 생성
 }
 
 

@@ -260,6 +260,8 @@
 /I "C:\Users\admin\Documents\Unreal Projects\KDTShooting\Intermediate\Build\Win64\UnrealEditor\Inc\KDTShooting\UHT"
 /I "C:\Users\admin\Documents\Unreal Projects\KDTShooting\Source"
 /I "C:\Users\admin\Documents\Unreal Projects\KDTShooting\Source\KDTShooting\Public"
+/I "..\Plugins\EnhancedInput\Intermediate\Build\Win64\UnrealEditor\Inc\EnhancedInput\UHT"
+/I "..\Plugins\EnhancedInput\Source\EnhancedInput\Public"
 /external:W0
 /external:I "ThirdParty\mimalloc\include"
 /external:I "ThirdParty\LibTiff\Source\Win64"
