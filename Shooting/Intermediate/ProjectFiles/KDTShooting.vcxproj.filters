@@ -45,6 +45,12 @@
     <ClCompile Include="..\..\Source\KDTShooting\Private\BulletActor.cpp">
       <Filter>Source\KDTShooting\Private</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\KDTShooting\Private\EnemyActor.cpp">
+      <Filter>Source\KDTShooting\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\KDTShooting\Private\EnemySpawner.cpp">
+      <Filter>Source\KDTShooting\Private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\KDTShooting\Private\PointerTestActor.cpp">
       <Filter>Source\KDTShooting\Private</Filter>
     </ClCompile>
@@ -58,6 +64,12 @@
       <UniqueIdentifier>{E11F3C84-96D9-36B4-8529-C4C7C1076AAF}</UniqueIdentifier>
     </Filter>
     <ClInclude Include="..\..\Source\KDTShooting\Public\BulletActor.h">
+      <Filter>Source\KDTShooting\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\KDTShooting\Public\EnemyActor.h">
+      <Filter>Source\KDTShooting\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\KDTShooting\Public\EnemySpawner.h">
       <Filter>Source\KDTShooting\Public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\KDTShooting\Public\PointerTestActor.h">

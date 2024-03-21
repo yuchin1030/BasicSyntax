@@ -214,7 +214,7 @@ void AShootingPlayer::Fire(const FInputActionValue& value)
 	*/
 
 	// 총알 액터를 fire의 Location과 Rotation 위치 및 방향으로 생성한다.
-	GetWorld()->SpawnActor<ABulletActor>(bulletFactory, fireLocation->GetComponentLocation(), fireLocation->GetComponentRotation(), params);	// SpawnActor : Actor 의 새 인스턴스를 생성
+	GetWorld()->SpawnActor<ABulletActor>(bulletFactory, fireLocation->GetComponentLocation(), fireLocation->GetComponentRotation(), params);	// GetWorld()->SpawnActor : Actor 의 새 인스턴스를 생성, UWorld 클래스에서 불러옴.
 }
 
 

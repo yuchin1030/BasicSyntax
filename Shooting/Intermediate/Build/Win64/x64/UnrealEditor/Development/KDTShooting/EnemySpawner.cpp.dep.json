@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\source\\kdtshooting\\private\\enemyspawner.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\x64\\kdtshootingeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\kdtshooting\\definitions.kdtshooting.h",
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\source\\kdtshooting\\public\\enemyspawner.h",
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\unrealeditor\\inc\\kdtshooting\\uht\\enemyspawner.generated.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\components\\arrowcomponent.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\arrowcomponent.generated.h",
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\source\\kdtshooting\\public\\enemyactor.h",
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\unrealeditor\\inc\\kdtshooting\\uht\\enemyactor.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

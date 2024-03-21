@@ -20,6 +20,10 @@
 				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_Bullet.uasset",
 				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/Materials/M_Bullet.uasset",
 				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/Inputs/IA_Fire.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_EnemyActor.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_Enemy.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/Materials/M_Enemy.uasset",
+				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_EnemySpawner.uasset",
 				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_ShootingPlayer2.uasset",
 				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/BluePrints/BP_ShottingPlayer.uasset",
 				"C:/Users/admin/Documents/Unreal Projects/KDTShooting/Content/Maps/Map.umap"

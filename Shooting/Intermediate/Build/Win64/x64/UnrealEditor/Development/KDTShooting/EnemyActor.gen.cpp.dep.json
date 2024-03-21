@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\unrealeditor\\inc\\kdtshooting\\uht\\enemyactor.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\x64\\kdtshootingeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\kdtshooting\\definitions.kdtshooting.h",
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\source\\kdtshooting\\public\\enemyactor.h",
+            "c:\\users\\admin\\documents\\unreal projects\\kdtshooting\\intermediate\\build\\win64\\unrealeditor\\inc\\kdtshooting\\uht\\enemyactor.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
