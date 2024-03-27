@@ -44,10 +44,16 @@ public:
 	class UInputAction* ia_fire;
 
 	UPROPERTY(EditAnywhere, Category = "MySettings")
+	class UInputAction* ia_openMenu;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings")
 	TSubclassOf<class ABulletActor> bulletFactory;			// TSubclassOf<클래스타입> : 블루프린트 클래스를 넣고싶을때
 
 	UPROPERTY(EditAnywhere, Category = "MySettings")
 	class UArrowComponent* fireLocation;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings")
+	class USoundBase* fireSound;
 
 private:
 	UFUNCTION(BlueprintCallable)
@@ -58,6 +64,9 @@ private:
 
 	UFUNCTION()
 	void Fire(const FInputActionValue& value);
+
+	UFUNCTION()
+	void ShowMenu(const FInputActionValue& value);
 
 
 

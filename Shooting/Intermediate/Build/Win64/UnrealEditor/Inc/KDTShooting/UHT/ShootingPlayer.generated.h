@@ -23,6 +23,7 @@ struct FInputActionValue;
 	DECLARE_FUNCTION(execPrintInputNumber); \
 	DECLARE_FUNCTION(execGetNumberFloat); \
 	DECLARE_FUNCTION(execMultiply); \
+	DECLARE_FUNCTION(execShowMenu); \
 	DECLARE_FUNCTION(execFire); \
 	DECLARE_FUNCTION(execSetInputDirection); \
 	DECLARE_FUNCTION(execMove);

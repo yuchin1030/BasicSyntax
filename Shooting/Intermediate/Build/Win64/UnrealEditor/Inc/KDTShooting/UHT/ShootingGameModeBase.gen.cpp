@@ -9,9 +9,12 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeShootingGameModeBase() {}
 // Cross Module References
+	COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 	ENGINE_API UClass* Z_Construct_UClass_AGameModeBase();
 	KDTSHOOTING_API UClass* Z_Construct_UClass_AShootingGameModeBase();
 	KDTSHOOTING_API UClass* Z_Construct_UClass_AShootingGameModeBase_NoRegister();
+	KDTSHOOTING_API UClass* Z_Construct_UClass_UGameOverWidget_NoRegister();
+	KDTSHOOTING_API UClass* Z_Construct_UClass_UMainWidget_NoRegister();
 	UPackage* Z_Construct_UPackage__Script_KDTShooting();
 // End Cross Module References
 	void AShootingGameModeBase::StaticRegisterNativesAShootingGameModeBase()
@@ -28,6 +31,15 @@ void EmptyLinkFunctionForGeneratedCodeShootingGameModeBase() {}
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_mainWidget_BP_MetaData[];
+#endif
+		static const UECodeGen_Private::FClassPropertyParams NewProp_mainWidget_BP;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_gameOverWidget_BP_MetaData[];
+#endif
+		static const UECodeGen_Private::FClassPropertyParams NewProp_gameOverWidget_BP;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 		static const FCppClassTypeInfoStatic StaticCppClassTypeInfo;
 		static const UECodeGen_Private::FClassParams ClassParams;
 	};
@@ -47,6 +59,24 @@ void EmptyLinkFunctionForGeneratedCodeShootingGameModeBase() {}
 		{ "ShowCategories", "Input|MouseInput Input|TouchInput" },
 	};
 #endif
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_mainWidget_BP_MetaData[] = {
+		{ "Category", "My Settings" },
+		{ "ModuleRelativePath", "Public/ShootingGameModeBase.h" },
+	};
+#endif
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_mainWidget_BP = { "mainWidget_BP", nullptr, (EPropertyFlags)0x0014000000000001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShootingGameModeBase, mainWidget_BP), Z_Construct_UClass_UClass, Z_Construct_UClass_UMainWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_mainWidget_BP_MetaData), Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_mainWidget_BP_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_gameOverWidget_BP_MetaData[] = {
+		{ "Category", "My Settings" },
+		{ "ModuleRelativePath", "Public/ShootingGameModeBase.h" },
+	};
+#endif
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_gameOverWidget_BP = { "gameOverWidget_BP", nullptr, (EPropertyFlags)0x0014000000000001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShootingGameModeBase, gameOverWidget_BP), Z_Construct_UClass_UClass, Z_Construct_UClass_UGameOverWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_gameOverWidget_BP_MetaData), Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_gameOverWidget_BP_MetaData) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AShootingGameModeBase_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_mainWidget_BP,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShootingGameModeBase_Statics::NewProp_gameOverWidget_BP,
+	};
 	const FCppClassTypeInfoStatic Z_Construct_UClass_AShootingGameModeBase_Statics::StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<AShootingGameModeBase>::IsAbstract,
 	};
@@ -56,15 +86,16 @@ void EmptyLinkFunctionForGeneratedCodeShootingGameModeBase() {}
 		&StaticCppClassTypeInfo,
 		DependentSingletons,
 		nullptr,
-		nullptr,
+		Z_Construct_UClass_AShootingGameModeBase_Statics::PropPointers,
 		nullptr,
 		UE_ARRAY_COUNT(DependentSingletons),
 		0,
-		0,
+		UE_ARRAY_COUNT(Z_Construct_UClass_AShootingGameModeBase_Statics::PropPointers),
 		0,
 		0x009002ACu,
 		METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingGameModeBase_Statics::Class_MetaDataParams), Z_Construct_UClass_AShootingGameModeBase_Statics::Class_MetaDataParams)
 	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AShootingGameModeBase_Statics::PropPointers) < 2048);
 	UClass* Z_Construct_UClass_AShootingGameModeBase()
 	{
 		if (!Z_Registration_Info_UClass_AShootingGameModeBase.OuterSingleton)
@@ -85,9 +116,9 @@ void EmptyLinkFunctionForGeneratedCodeShootingGameModeBase() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingGameModeBase_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_AShootingGameModeBase, AShootingGameModeBase::StaticClass, TEXT("AShootingGameModeBase"), &Z_Registration_Info_UClass_AShootingGameModeBase, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AShootingGameModeBase), 4277855837U) },
+		{ Z_Construct_UClass_AShootingGameModeBase, AShootingGameModeBase::StaticClass, TEXT("AShootingGameModeBase"), &Z_Registration_Info_UClass_AShootingGameModeBase, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AShootingGameModeBase), 3761671239U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingGameModeBase_h_4258534522(TEXT("/Script/KDTShooting"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingGameModeBase_h_766618403(TEXT("/Script/KDTShooting"),
 		Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingGameModeBase_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_admin_Documents_Unreal_Projects_KDTShooting_Source_KDTShooting_Public_ShootingGameModeBase_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);

@@ -5,7 +5,9 @@
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "BulletActor.h"
+#include "ShootingGameModeBase.h"
 
 using namespace std;
 
@@ -22,6 +24,8 @@ AShootingPlayer::AShootingPlayer()	// construction
 	// 1-2. 박스 컴포넌트의 크기를 50x50x50 으로 설정한다.
 	boxComp->SetBoxExtent(FVector(50, 50, 50));
 
+	boxComp->SetCollisionProfileName(FName("PlayerPreset"));
+
 	// 2. 스태틱 메시 컴포넌트를 생성한다.
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh Component"));
 
@@ -30,6 +34,8 @@ AShootingPlayer::AShootingPlayer()	// construction
 
 	// 2-2. 메시 컴포넌트의 위치를 z축으로 -50만큼 내린다.
 	meshComp->SetRelativeLocation(FVector(0,0,-50));
+
+	meshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	// 3. 총구 표시용 화살표 컴포넌트를 생성한다.
 	fireLocation = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow Component"));
@@ -174,12 +180,13 @@ void AShootingPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	
 	// UInputComponent : 예전 입력방식. 따라서 EnhancedInput으로 캐스팅(변환)해야함.
 	UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-
+	
 	if (enhancedInputComponent != nullptr) {
 		// 4. 입력 이벤트 컴포넌트에 실행할 함수를 연결(Binding)한다.					함수의 주소값을 가져옴
 		enhancedInputComponent->BindAction(ia_move, ETriggerEvent::Triggered, this, &AShootingPlayer::SetInputDirection);		// ETriggerEvent의 접두어 E : enum(열거) 클래스 (선택지를 만들어놓는 클래스)
 		enhancedInputComponent->BindAction(ia_move, ETriggerEvent::Completed, this, &AShootingPlayer::SetInputDirection);
 		enhancedInputComponent->BindAction(ia_fire, ETriggerEvent::Started, this, &AShootingPlayer::Fire);
+		enhancedInputComponent->BindAction(ia_openMenu, ETriggerEvent::Started, this, &AShootingPlayer::ShowMenu);
 						// 추가적인 입력은 여기에 한줄씩만 추가해주면 된다.
 	}
 }
@@ -215,6 +222,21 @@ void AShootingPlayer::Fire(const FInputActionValue& value)
 
 	// 총알 액터를 fire의 Location과 Rotation 위치 및 방향으로 생성한다.
 	GetWorld()->SpawnActor<ABulletActor>(bulletFactory, fireLocation->GetComponentLocation(), fireLocation->GetComponentRotation(), params);	// GetWorld()->SpawnActor : Actor 의 새 인스턴스를 생성, UWorld 클래스에서 불러옴.
+
+	// 총알 효과음을 출력한다.
+	if (fireSound != nullptr) {
+		UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+	}
+}
+
+void AShootingPlayer::ShowMenu(const FInputActionValue& value)
+{
+	// 게임 모드에 있는 ShowGameOverUI() 함수를 실행한다.
+	 AShootingGameModeBase* gm = Cast<AShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	 if (gm != nullptr) {
+		 gm->ShowGameOverUI();
+	 }
 }
 
 
