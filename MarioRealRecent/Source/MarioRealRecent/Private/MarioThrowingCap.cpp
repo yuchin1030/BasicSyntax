@@ -67,15 +67,21 @@ void AMarioThrowingCap::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	/*if (punchCapVar->cupaHatCollision->IsOverlappingActor(playerVar->spawnedCap)) {
+	bool result = throwCapColl->IsOverlappingActor(punchCapVar);
+	UE_LOG(LogTemp, Warning, TEXT("Overlap: %s"), result ? *FString("True") : *FString("False"));
+
+	// punchCapVar->cupaHatCollision->IsOverlappingActor(playerVar->spawnedCap
+	if (throwCapColl->IsOverlappingActor(punchCapVar)) {
 		proMovement->StopMovementImmediately();
+
+		
 	}
 	else {
 		FTimerHandle cupaHatRotateHandler;
 
-		GetWorldTimerManager().SetTimer(cupaHatRotateHandler, punchCapVar, &AMarioPunchingCap::cupaHatRotate, 0.2f, false);	// false : 1번만, true : 루프
+		GetWorldTimerManager().SetTimer(cupaHatRotateHandler, punchCapVar, &AMarioPunchingCap::CupaHatRotate, 0.2f, false);	// false : 1번만, true : 루프
 		proMovement->StopMovementImmediately();
-	}*/
+	}
 
 
 }

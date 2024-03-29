@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "MarioRealRecent",
+			"Path": "..\\Source\\MarioRealRecent.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "MarioRealRecentEditor",
+			"Path": "..\\Source\\MarioRealRecentEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

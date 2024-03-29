@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/TimelineComponent.h"
 #include "GameFramework/Actor.h"
 #include "MarioPunchingCap.generated.h"
 
@@ -30,6 +31,25 @@ public:
 	class UInterpToMovementComponent* interpMovement;
 
 	UFUNCTION()
-	void cupaHatRotate();
+	void CupaHatRotate();
+
+	//class UCurveFloat;
+
+	FTimeline CurveTimeline;
+
+	UPROPERTY(EditAnywhere, Category="Timeline")
+	class UCurveFloat* CurveFloat;
+
+	UPROPERTY()
+	FRotator StartRot;
+
+	UPROPERTY()
+	FRotator EndRot;
+
+	UPROPERTY(EditAnywhere, Category="Timeline")
+	float offset;	// 내가 줄 값
+
+	UFUNCTION()
+	void TimelineProgress(float Value);
 
 };
