@@ -10,7 +10,7 @@ void UPlayerAnimInstance::NativeInitializeAnimation()
 	Super::NativeInitializeAnimation();
 
 	player = Cast<ATPSPlayer>(GetOwningActor());
-
+	
 	if (player != nullptr)
 	{
 		playerMovementComp = player->GetCharacterMovement();

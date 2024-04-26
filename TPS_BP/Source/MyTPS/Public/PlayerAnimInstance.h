@@ -13,29 +13,31 @@ UCLASS()
 class MYTPS_API UPlayerAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
-
+	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings")
 	FVector moveDirection;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings")
 	bool bIsJump = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings")
 	bool bFire = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings")
 	bool bUseSniper = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings")
+	bool bDead = false;
+	
 
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-	
+
 private:
 	UPROPERTY()
 	class ATPSPlayer* player;
 
 	UPROPERTY()
 	class UCharacterMovementComponent* playerMovementComp;
-
-	
 };

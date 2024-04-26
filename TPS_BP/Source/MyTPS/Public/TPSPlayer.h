@@ -4,7 +4,44 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Engine/DataTable.h"
 #include "TPSPlayer.generated.h"
+
+UENUM(BlueprintType)
+enum class EPlayerState : uint8
+{
+	READY,
+	PLAYING,
+	DEATH,
+};
+
+UENUM(BlueprintType)
+enum class EInputType : uint8
+{
+	TPS_INPUT,
+	RTS_INPUT,
+	MOBILE_INPUT
+};
+
+USTRUCT(BlueprintType)
+struct FPlayerStatus : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	int32 maxHP = 50;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	float baseSpeed = 600.0f;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	float dashSpeed = 1200.0f;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	int32 jumpCount = 2;
+};
+
 
 UCLASS()
 class MYTPS_API ATPSPlayer : public ACharacter
@@ -31,39 +68,21 @@ public:
 	UPROPERTY(VisibleAnywhere, Category="MySettings|Components")
 	class UStaticMeshComponent* gunMeshComp;
 
+	UPROPERTY(VisibleAnywhere, Category="MySettings|Components")
+	class UWidgetComponent* floatingWidgetComp;
+
+	// 사용자 컴포넌트들
+	UPROPERTY(VisibleAnywhere, Category="MySettings|Components")
+	class UMoveComponent* moveComp;
+
+	UPROPERTY(VisibleAnywhere, Category="MySettings|Components")
+	class UWeaponComponent* weaponComp;
+
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	class UInputMappingContext* imc_tpsKeyMap;
 
-	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
-	class UInputAction* ia_move;
-
-	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
-	class UInputAction* ia_rotate;
-
-	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
-	class UInputAction* ia_jump;
-
-	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
-	class UInputAction* ia_fire;
-
-	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
-	class UInputAction* ia_alpha1;
-
-	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
-	class UInputAction* ia_alpha2;
-	
-	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
-	class UInputAction* ia_aimFocusing;
-
-	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
-	class UInputAction* ia_releaseWeapon;
-
-
-	UPROPERTY(EditAnywhere, Category="MySettings|Options", meta = (UIMin="0.01", UIMax="1.99", ClampMin="0.01", ClampMax="1.99"))
-	float mouseSensibility = 0.2f;
-
-	UPROPERTY(EditAnywhere, Category="MySettings|Variables")
-	class ABulletFXActor* bulletFX;
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	EInputType inputType = EInputType::TPS_INPUT;
 
 	UPROPERTY(EditAnywhere, Category="MySettings|Variables")
 	TArray<class UStaticMesh*> gunTypes;
@@ -71,78 +90,50 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings|Variables")
 	TArray<FVector> gunOffset;
 
+	UPROPERTY(EditAnywhere, Category="MySettings|Variables")
+	TSubclassOf<class UCameraShakeBase> playerHitShake_bp;
+
+	UPROPERTY(EditAnywhere, Category="MySettings|Variables")
+	EPlayerState tpsPlayerState;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings|Variables")
+	struct FPlayerStatus playerStatus;
+
 	UPROPERTY()
 	class AWeaponActor* attachedWeapon;
 
 	UPROPERTY(EditAnywhere, Category="MySettings|Animations")
-	TArray<class UAnimMontage*> fire_montages;
+	class UAnimMontage* hitMotage;
 
-	//UPROPERTY(EditAnywhere, Category="MySettings|Variables")
-	//TArray<class UAnimationAsset*> anims;
+	
+	
 
 	void SetGunAnimType(bool sniper);
+	
+	FORCEINLINE int32 GetCurrentHP() { return currentHP; };
+	FORCEINLINE class UPlayerAnimInstance* GetPlayerAnim() { return playerAnim; };
+
+	UFUNCTION()
+	void OnDamaged(int32 dmg, class AEnemy* attacker);
 
 private:
-	FVector moveDirection;
-	FRotator deltaRotation;
 	FVector camPosition = FVector(-500, 0, 60);
 	FVector previousCamLoc;
-	FTimerHandle endFireTimer;
+	
+	int32 currentHP = 0;
+	class UEnemyHealthWidget* playerHealthWidget;
 
 	UPROPERTY()
-	class ATPSMainGameModeBase* gm;
-
-	bool bZoomIn = false;
-	float alpha = 0;
-	int32 currentWeaponNumber;
+	class APlayerController* pc;
 
 	UPROPERTY()
 	class UPlayerAnimInstance* playerAnim;
 
-
-
-
-	UFUNCTION()
-	void PlayerMove(const FInputActionValue& value);
-
-	/*UFUNCTION()
-	void PlayerMoveStart(const FInputActionValue& value);
-
-	UFUNCTION()
-	void PlayerMoveEnd(const FInputActionValue& value);*/
-
-	UFUNCTION()
-	void PlayerRotate(const FInputActionValue& value);
-
-	UFUNCTION()
-	void PlayerJump(const FInputActionValue& value);
-
-	UFUNCTION()
-	void PlayerJumpEnd(const FInputActionValue& value);
-
-	UFUNCTION()
-	void PlayerFire(const FInputActionValue& value);
-
-	UFUNCTION()
-	void PlayerFire2(const FInputActionValue& value);
-
-	UFUNCTION()
-	void SetWeapon1(const FInputActionValue& value);
-
-	UFUNCTION()
-	void SetWeapon2(const FInputActionValue& value);
-
-	UFUNCTION()
-	void SniperGunZoomInOut(const FInputActionValue& value);
-
-	UFUNCTION()
-	void ReleaseAction(const FInputActionValue& value);
-
-	UFUNCTION()
-	void EndFire();
+	UPROPERTY()
+	class ATPSMainGameModeBase* gm;
+	
 
 	void CheckObstacles();
 	void SetCameraLag(float deltaTime, float traceSpeed);
-	void ChangeGunType(int32 number);
 	
 };

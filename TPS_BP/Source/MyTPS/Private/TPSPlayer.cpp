@@ -7,20 +7,23 @@
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "KismetTraceUtils.h"
 #include "Components/StaticMeshComponent.h"
-#include "BulletFXActor.h"
-#include "EngineUtils.h"
 #include "TPSMainGameModeBase.h"
 #include "MainWidget.h"
-#include "WeaponActor.h"
 #include "PlayerAnimInstance.h"
-#include "Enemyy.h"
+#include "Enemy.h"
+#include "EnemyHealthWidget.h"
+#include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "MoveComponent.h"
+#include "WeaponComponent.h"
+#include "FSMComponent.h"
+#include "TPSGameInstance.h"
 
 
 ATPSPlayer::ATPSPlayer()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	// 스켈레탈 메시 에셋 할당하기
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> playerMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
@@ -44,6 +47,10 @@ ATPSPlayer::ATPSPlayer()
 	// 스프링 암의 이동을 지연시키는 효과를 켜기
 	springArmComp->bEnableCameraLag = true;
 	springArmComp->CameraLagSpeed = 50.0f;
+	springArmComp->bUsePawnControlRotation = true;
+	springArmComp->bInheritYaw = true;
+	springArmComp->bInheritPitch = true;
+	springArmComp->bInheritRoll = false;
 
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
 	//cameraComp->SetupAttachment(GetCapsuleComponent());
@@ -55,6 +62,18 @@ ATPSPlayer::ATPSPlayer()
 
 	gunMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gun Mesh"));
 	gunMeshComp->SetupAttachment(GetMesh(), FName("GunSocket"));
+
+	floatingWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Floating Widget Component"));
+	floatingWidgetComp->SetupAttachment(GetMesh());
+	floatingWidgetComp->SetRelativeLocation(FVector(0, 0, 200));
+	floatingWidgetComp->SetWidgetSpace(EWidgetSpace::Screen);
+	floatingWidgetComp->SetDrawSize(FVector2D(150, 100));
+
+	static ConstructorHelpers::FClassFinder<UEnemyHealthWidget> playerHPWidget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_PlayerHealthWidget.WBP_PlayerHealthWidget_C'"));
+	if (playerHPWidget.Succeeded())
+	{
+		floatingWidgetComp->SetWidgetClass(playerHPWidget.Class);
+	}
 
 
 	// 캐릭터의 최대 이동 속력과 가속력을 설정한다.(cm/s)
@@ -76,35 +95,60 @@ ATPSPlayer::ATPSPlayer()
 	// 점프력 설정
 	GetCharacterMovement()->JumpZVelocity = 600.0f;
 	GetCharacterMovement()->AirControl = 0.05f;
+
 	
-	// 연속 점프 가능 수
-	JumpMaxCount = 2;
+
+	// 0번 플레이어(로컬 플레이어)로 등록한다.
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+	// 사용자 액터 컴포넌트들
+	moveComp = CreateDefaultSubobject<UMoveComponent>(TEXT("Move Component"));
+	weaponComp = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon Component"));
 }
 
 void ATPSPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	//APlayerController* pc = GetWorld()->GetFirstPlayerController();
-	APlayerController* pc = GetController<APlayerController>();
+	pc = GetController<APlayerController>();
 	if (pc != nullptr)
 	{
 		UEnhancedInputLocalPlayerSubsystem* subsys = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(pc->GetLocalPlayer());
-		
+
 		if (subsys != nullptr)
 		{
 			subsys->AddMappingContext(imc_tpsKeyMap, 0);
 		}
 	}
-	
-	// 월드에 있는 총알 피격 효과 액터를 찾아서 변수에 참조시킨다.
-	for (TActorIterator<ABulletFXActor> iter(GetWorld()); iter; ++iter)
-	{
-		bulletFX = *iter;
-	}
 
 	gm = Cast<ATPSMainGameModeBase>(GetWorld()->GetAuthGameMode());
 	playerAnim = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+
+	currentHP = playerStatus.maxHP;
+	playerHealthWidget = Cast<UEnemyHealthWidget>(floatingWidgetComp->GetWidget());
+
+	tpsPlayerState = EPlayerState::PLAYING;
+
+	// 연속 점프 가능 수 설정
+	JumpMaxCount = playerStatus.jumpCount;
+
+	// 기본 이동 속도 설정
+	GetCharacterMovement()->MaxWalkSpeed = playerStatus.baseSpeed;
+
+	// 게임 인스턴스 가져오기
+	UTPSGameInstance* gi = GetGameInstance<UTPSGameInstance>();
+	
+	// 테이블의 모든 행 이름(Row Name)을 읽어오기
+	TArray<FName> rowNameList = gi->dt_playerStatus->GetRowNames();
+	for (int32 i = 0; i < rowNameList.Num(); i++)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%d: %s"), i, *rowNameList[i].ToString());
+	}
+
+	// 테이블 데이터를 행(Row) 단위로 읽기
+	FPlayerStatus readData = gi->GetPlayerTableData("HeavyMan");
+	UE_LOG(LogTemp, Warning, TEXT("Base Speed: %f, DashSpeed: %f, Max Jump Count: %d, Max HP: %d"), readData.baseSpeed, readData.dashSpeed, readData.jumpCount, readData.maxHP);
 }
 
 void ATPSPlayer::Tick(float DeltaTime)
@@ -113,15 +157,6 @@ void ATPSPlayer::Tick(float DeltaTime)
 
 	// 카메라와 캐릭터 사이의 방해물을 검사하는 함수
 	//CheckObstacles();
-	
-	// 카메라 줌 인 아웃 처리
-	float direction = bZoomIn ? 1.0f : -1.0f;
-	alpha += DeltaTime * direction * 5.0f;
-	alpha = FMath::Clamp(alpha, 0.0f, 1.0f);
-
-	float result = FMath::Lerp(90, 40, alpha);
-	cameraComp->SetFieldOfView(result);
-
 }
 
 void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -132,21 +167,8 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 	if (enhancedInputComponent != nullptr)
 	{
-		//enhancedInputComponent->BindAction(ia_move, ETriggerEvent::Started, this, &ATPSPlayer::PlayerMoveStart);
-		enhancedInputComponent->BindAction(ia_move, ETriggerEvent::Triggered, this, &ATPSPlayer::PlayerMove);
-		enhancedInputComponent->BindAction(ia_move, ETriggerEvent::Completed, this, &ATPSPlayer::PlayerMove);
-		//enhancedInputComponent->BindAction(ia_move, ETriggerEvent::Completed, this, &ATPSPlayer::PlayerMoveEnd);
-		enhancedInputComponent->BindAction(ia_rotate, ETriggerEvent::Triggered, this, &ATPSPlayer::PlayerRotate);
-		//enhancedInputComponent->BindAction(ia_rotate, ETriggerEvent::Completed, this, &ATPSPlayer::PlayerRotate);
-		enhancedInputComponent->BindAction(ia_jump, ETriggerEvent::Started, this, &ATPSPlayer::PlayerJump);
-		enhancedInputComponent->BindAction(ia_jump, ETriggerEvent::Completed, this, &ATPSPlayer::PlayerJumpEnd);
-		//enhancedInputComponent->BindAction(ia_jump, ETriggerEvent::Started, this, &ACharacter::Jump);
-		enhancedInputComponent->BindAction(ia_fire, ETriggerEvent::Started, this, &ATPSPlayer::PlayerFire);
-		enhancedInputComponent->BindAction(ia_alpha1, ETriggerEvent::Started, this, &ATPSPlayer::SetWeapon1);
-		enhancedInputComponent->BindAction(ia_alpha2, ETriggerEvent::Started, this, &ATPSPlayer::SetWeapon2);
-		enhancedInputComponent->BindAction(ia_aimFocusing, ETriggerEvent::Started, this, &ATPSPlayer::SniperGunZoomInOut);
-		enhancedInputComponent->BindAction(ia_aimFocusing, ETriggerEvent::Completed, this, &ATPSPlayer::SniperGunZoomInOut);
-		enhancedInputComponent->BindAction(ia_releaseWeapon, ETriggerEvent::Started, this, &ATPSPlayer::ReleaseAction);
+		moveComp->SetupPlayerInputComponent(enhancedInputComponent);
+		weaponComp->SetupPlayerInputComponent(enhancedInputComponent);
 	}
 }
 
@@ -158,229 +180,65 @@ void ATPSPlayer::SetGunAnimType(bool sniper)
 	}
 }
 
-void ATPSPlayer::PlayerMove(const FInputActionValue& value)
+void ATPSPlayer::OnDamaged(int32 dmg, AEnemy* attacker)
 {
-	FVector2D inputValue = value.Get<FVector2D>();
-	moveDirection = FVector(inputValue.Y, inputValue.X, 0);
+	currentHP = FMath::Clamp(currentHP - dmg, 0, playerStatus.maxHP);
 
-	// p = p0 + vt
-	// v = v0 + at
-	//SetActorLocation(GetActorLocation() + moveDirection * 600 * DeltaTime);
-
-	// UCharacterMovementComponent의 함수를 이용해서 이동하는 방식
-	// 입력 방향 벡터를 자신의 회전 값 기준으로 변환한다.(world -> local)
-	//FVector localMoveDirection = GetTransform().TransformVector(moveDirection);
-	FVector localMoveDirection = cameraComp->GetComponentTransform().TransformVector(moveDirection);
-
-	//FVector forward = FRotationMatrix(GetActorRotation()).GetUnitAxis(EAxis::X);
-	//FVector right = FRotationMatrix(GetActorRotation()).GetUnitAxis(EAxis::Y);
-	//FVector localMoveDirection = GetActorForwardVector() * moveDirection.X + GetActorRightVector() * moveDirection.Y;
-	AddMovementInput(localMoveDirection.GetSafeNormal());
-
-	// 애니메이션 인스턴스에 있는 moveDirection 변수에 현재 입력값으 전달한다.
-	if (playerAnim != nullptr)
+	if (playerHealthWidget != nullptr)
 	{
-		playerAnim->moveDirection = moveDirection;
+		playerHealthWidget->SetHealthBar((float)currentHP / (float)playerStatus.maxHP, FLinearColor(1.0f, 0.138f, 0.059f, 1.0f));
 	}
-	
-}
 
-/*void ATPSPlayer::PlayerMoveStart(const FInputActionValue& value)
-{
-	// 달리기 애니메이션으로 교체한다.
-	GetMesh()->PlayAnimation(anims[1], true);
-}
-
-void ATPSPlayer::PlayerMoveEnd(const FInputActionValue& value)
-{
-	// 대기 애니메이션으로 교체한다.
-	GetMesh()->PlayAnimation(anims[0], true);
-}*/
-
-void ATPSPlayer::PlayerRotate(const FInputActionValue& value)
-{
-	FVector2D inputValue = value.Get<FVector2D>();
-	deltaRotation = FRotator(inputValue.Y, inputValue.X, 0);
-	//UE_LOG(LogTemp, Warning, TEXT("(%.2f, %.2f)"), inputValue.X, inputValue.Y);
-
-	//SetActorRotation(GetActorRotation() + deltaRotation);
-	AddControllerYawInput(deltaRotation.Yaw * mouseSensibility);
-	AddControllerPitchInput(deltaRotation.Pitch * mouseSensibility);
-}
-
-void ATPSPlayer::PlayerJump(const FInputActionValue& value)
-{
-	Jump();
-
-
-}
-
-void ATPSPlayer::PlayerJumpEnd(const FInputActionValue& value)
-{
-	StopJumping();
-
-	GetCharacterMovement()->IsFalling();
-
-}
-
-void ATPSPlayer::PlayerFire(const FInputActionValue& value)
-{
-	// 총을 들고 있지 않거나 또는 총을 발사하는 애니메이션 중일 때에는 이 함수를 종료한다. 
-	if (attachedWeapon == nullptr || GetWorldTimerManager().IsTimerActive(endFireTimer))
+	if (currentHP <= 0)
 	{
-		return;
-	}
-	
-	// 라인 트레이스 방식
-	FHitResult hitInfo;
-	FVector startLoc = cameraComp->GetComponentLocation();
-	FVector endLoc = startLoc + cameraComp->GetForwardVector() * 1000.0f;
-	// 충돌 체크에 포함할 오브젝트 타입
-	FCollisionObjectQueryParams objQueryParams;
-	objQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
-	objQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
-	// 충돌 체크에서 제외할 액터 또는 컴포넌트
-	FCollisionQueryParams queryParams;
-	queryParams.AddIgnoredActor(this);
+		// 자신의 상태를 죽음 상태로 전환한다.
+		tpsPlayerState = EPlayerState::DEATH;
+		playerAnim->bDead = true;
+		GetCharacterMovement()->DisableMovement();
 
-	// 싱글 방식
-	//bool bResult = GetWorld()->LineTraceSingleByObjectType(hitInfo, startLoc, endLoc, objQueryParams, queryParams);
-	bool bResult = GetWorld()->LineTraceSingleByChannel(hitInfo, startLoc, endLoc, ECC_Visibility, queryParams);
+		attacker->fsmComp->RemoveTarget();
+		attacker->fsmComp->enemyState = EEnemyState::RETURN;
 
-	// 멀티 방식
-	//TArray<FHitResult> hitInfos;
-
-	//bool bResult = GetWorld()->LineTraceMultiByChannel(hitInfos, startLoc, endLoc, ECC_Visibility, queryParams);
-	//bool bResult = GetWorld()->LineTraceMultiByObjectType(hitInfos, startLoc, endLoc, objQueryParams, queryParams);
-
-	if (bResult)
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("Hit Actor Name: %s"), *hitInfo.GetActor()->GetActorNameOrLabel());
-		//DrawDebugLine(GetWorld(), startLoc, hitInfo.ImpactPoint, FColor(0, 255, 0), false, 2.0f, 0, 1);
-		//DrawDebugLine(GetWorld(), hitInfo.ImpactPoint, endLoc, FColor(255, 0, 0), false, 2.0f, 0, 1);
-
-		// 감지된 지점에 폭발 효과 이펙트를 출력한다.
-		if (bulletFX != nullptr)
+		// 페이드 인 효과를 준다.
+		if (pc != nullptr)
 		{
-			bulletFX->SetActorLocation(hitInfo.ImpactPoint);
-			bulletFX->PlayFX();
-		}
+			pc->PlayerCameraManager->StartCameraFade(0, 1, 3.0f, FLinearColor::Black);
 
-		// 만일, 감지된 대상이 Enemy 라면
-		AEnemyy* enemy = Cast<AEnemyy>(hitInfo.GetActor());
-
-		if (enemy != nullptr)
-		{
-			// Enemy 의 OnDamage() 함수를 실행시킨다.
-			enemy->OnDamaged(attachedWeapon->damage);
+			FTimerHandle restartHandle;
+			GetWorldTimerManager().SetTimer(restartHandle, FTimerDelegate::CreateLambda([&]() {
+				// 시작 위치에서 다시 시작한다.
+				Cast<ATPSMainGameModeBase>(GetWorld()->GetAuthGameMode())->RespawnPlayer(pc, this);
+				}), 3.0f, false);
 		}
 
 	}
-	else
+
+	// 카메라를 흔드는 효과를 준다.
+	if (pc != nullptr)
 	{
-		//DrawDebugLine(GetWorld(), startLoc, endLoc, FColor(255, 0, 0), false, 2.0f, 0, 1.0f);
+		pc->ClientStopCameraShake(playerHitShake_bp);
+		pc->ClientStartCameraShake(playerHitShake_bp);
 	}
 
-	if (playerAnim != nullptr)
-	{
-		playerAnim->bFire = true;
+	// 히트 UI를 표시한다.
+	/*gm->mainWidget_inst->ShowHitBorder(true);
 
-		GetWorldTimerManager().SetTimer(endFireTimer, this, &ATPSPlayer::EndFire, 0.5f, false);
-	}
+	FTimerHandle hitBorderHandler;
 
-	if (fire_montages.Num() > 1)
-	{
-		if (attachedWeapon->bSniperGun)
-		{
-			PlayAnimMontage(fire_montages[1]);
-		}
-		else
-		{
-			PlayAnimMontage(fire_montages[0]);
+	GetWorldTimerManager().SetTimer(hitBorderHandler, FTimerDelegate::CreateLambda([&]() {
+		gm->mainWidget_inst->ShowHitBorder(false);
+		}), 0.4f, false);*/
+	gm->mainWidget_inst->PlayHitAnimation();
 
-		}
-	}
+	int32 number = FMath::RandRange(1, 4);
+	//FString sectionName = FString("hit") + FString::FromInt(number);
+	FString sectionName = FString::Printf(TEXT("hit%d"), number);
+
+	PlayAnimMontage(hitMotage, 1.0f, FName(sectionName));
 }
 
-void ATPSPlayer::PlayerFire2(const FInputActionValue& value)
-{
-	FHitResult hitInfo;
-	FVector startLoc = GetActorLocation();
-	FVector endLoc = startLoc + GetActorForwardVector() * 1000.0f;
-	FQuat startRot = FRotator(0, 0, 45).Quaternion();
-	FCollisionQueryParams queryParams;
-	queryParams.AddIgnoredActor(this);
 
-	// 정육면체를 45도 회전시킨 상태로 발사한다.
-	bool bResult = GetWorld()->SweepSingleByChannel(hitInfo, startLoc, endLoc, startRot, ECC_Visibility, FCollisionShape::MakeBox(FVector(10)), queryParams);
 
-	if (bResult)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit Actor name: %s"), *hitInfo.GetActor()->GetActorNameOrLabel());
-		FVector centerPos = (startLoc + endLoc) * 0.5f;
-	}
-
-	DrawDebugBoxTraceSingle(GetWorld(), startLoc, endLoc, FVector(10), FRotator(0, 0, 45), EDrawDebugTrace::ForDuration, true, hitInfo, FLinearColor::Green, FLinearColor::Red, 2.0f);
-}
-
-void ATPSPlayer::SetWeapon1(const FInputActionValue& value)
-{
-	currentWeaponNumber = 0;
-	ChangeGunType(0);
-}
-
-void ATPSPlayer::SetWeapon2(const FInputActionValue& value)
-{
-	currentWeaponNumber = 1;
-	ChangeGunType(1);
-}
-
-void ATPSPlayer::SniperGunZoomInOut(const FInputActionValue& value)
-{
-	if (currentWeaponNumber != 1)
-	{
-		return;	// return 만나면 코드가 더 있어도 그냥 빠져나감
-	}
-
-	bool inputValue = value.Get<bool>();
-
-	if (inputValue)
-	{
-		springArmComp->TargetArmLength = -100;
-	}
-	else
-	{
-		springArmComp->TargetArmLength = 300;
-	}
-
-	// zoom in 효과 on/off 설정
-	bZoomIn = inputValue;
-
-	if (gm != nullptr && gm->mainWidget_inst != nullptr)
-	{
-		gm->mainWidget_inst->SetSniperMode(!inputValue);
-	}
-}
-
-void ATPSPlayer::ReleaseAction(const FInputActionValue& value)
-{
-	if (attachedWeapon == nullptr)
-	{
-		return;
-	}
-
-	attachedWeapon->Release();
-	attachedWeapon = nullptr;
-
-}
-
-void ATPSPlayer::EndFire()
-{
-	if (playerAnim != nullptr)
-	{
-		playerAnim->bFire = false;
-	}
-}
 
 void ATPSPlayer::CheckObstacles()
 {
@@ -397,7 +255,7 @@ void ATPSPlayer::CheckObstacles()
 		// 충돌한 지점에서 10cm 앞쪽에 카메라를 위치시킨다.
 		FVector camLocation = hitInfo.ImpactPoint + hitInfo.ImpactNormal * 10;
 		FVector lerpLocation = FMath::Lerp(cameraComp->GetComponentLocation(), camLocation, GetWorld()->GetDeltaSeconds() * 5);
-		
+
 		cameraComp->SetWorldLocation(lerpLocation);
 	}
 	// 그렇지 않다면...
@@ -405,7 +263,7 @@ void ATPSPlayer::CheckObstacles()
 	{
 		// 카메라를 원래 위치에 위치시킨다.
 		//cameraComp->SetRelativeLocation(camPosition);
-		
+
 		// 카메라 지연 효과
 		SetCameraLag(GetWorld()->GetDeltaSeconds(), 5.0f);
 	}
@@ -422,16 +280,7 @@ void ATPSPlayer::SetCameraLag(float deltaTime, float traceSpeed)
 	previousCamLoc = cameraComp->GetComponentLocation();
 }
 
-void ATPSPlayer::ChangeGunType(int32 number)
-{
-	// 메시 변경
-	gunMeshComp->SetStaticMesh(gunTypes[number]);
-	gunMeshComp->SetRelativeLocation(gunOffset[number]);
-	
-	// UI 텍스쳐 변경
-	if (gm != nullptr)
-	{
-		gm->mainWidget_inst->SetWeaponTexture(number);
-	}
-}
+
+
+
 
